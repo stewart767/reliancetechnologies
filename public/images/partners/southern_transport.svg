@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" width="240" height="50">
+  <rect x="10" y="17" width="24" height="3" fill="#cbd5e1" rx="0.5"/>
+  <rect x="10" y="23" width="18" height="3" fill="#94a3b8" rx="0.5"/>
+  <rect x="10" y="29" width="12" height="3" fill="#475569" rx="0.5"/>
+  <text x="40" y="22" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="11" fill="#1e293b" letter-spacing="-0.2">Southern African</text>
+  <text x="40" y="34" font-family="system-ui, -apple-system, sans-serif" font-weight="bold" font-size="9" fill="#64748b" letter-spacing="0.5">TRANSPORT CONFERENCE</text>
+</svg>

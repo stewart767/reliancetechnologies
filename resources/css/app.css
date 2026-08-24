@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-title: 'Outfit', sans-serif;
+    --color-slate-955: #ffffff;
+    --color-slate-950: #ffffff;
+    --color-slate-905: #f4f7fa;
+    --color-slate-900: #f4f7fa;
+    --color-slate-850: #e9eff5;
+    --color-slate-800: #d9e2ec;
+    --color-slate-700: #b0c4de;
+    --color-slate-600: #94a3b8;
+    --color-slate-500: #64748b;
+    --color-slate-400: #475569;
+    --color-slate-300: #1e293b;
+    --color-slate-200: #0f172a;
+    --color-slate-100: #020617;
+
+    /* Custom variables for theme configuration */
+    --color-primary-color: #0056cc;
+    --color-primary-hover: #0042a3;
+    --color-accent-color: #e11d48;
+
+    /* Brand Blue Palette (overriding default Tailwind blue) */
+    --color-blue-50: #f0f7ff;
+    --color-blue-100: #e0effe;
+    --color-blue-200: #bae0fd;
+    --color-blue-300: #7cc4fc;
+    --color-blue-400: #38a6f9;
+    --color-blue-500: #0088ff;
+    --color-blue-600: #0056cc;
+    --color-blue-700: #0042a3;
+    --color-blue-800: #0a1c42;
+    --color-blue-900: #050e26;
+    --color-blue-950: #020617;
+
+    /* Brand Red Accent Palette (overriding default Tailwind cyan to convert accents/gradients) */
+    --color-cyan-50: #fff1f2;
+    --color-cyan-100: #ffe4e6;
+    --color-cyan-200: #fecdd3;
+    --color-cyan-300: #fda4af;
+    --color-cyan-400: #ff3356;
+    --color-cyan-500: #e11d48;
+    --color-cyan-600: #c0123c;
+    --color-cyan-700: #9f1239;
+    --color-cyan-800: #881337;
+    --color-cyan-900: #4c0519;
+
+    /* Brand Red Accent Palette (overriding default Tailwind red for consistency) */
+    --color-red-50: #fff1f2;
+    --color-red-100: #ffe4e6;
+    --color-red-200: #fecdd3;
+    --color-red-300: #fda4af;
+    --color-red-400: #ff3356;
+    --color-red-500: #e11d48;
+    --color-red-600: #c0123c;
+    --color-red-700: #9f1239;
+    --color-red-800: #881337;
+    --color-red-900: #4c0519;
+}
+
+@utility container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 1280px;
+}
+
+/* Custom fade in animation for Alpine tabs */
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating animation for tech globe visual */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Rotate animation for dashed tech circles */
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+    animation: spin-slow 15s linear infinite reverse;
+}
+
+/* Light Theme Legibility & UI Overrides */
+h1.text-white,
+h2.text-white,
+h3.text-white,
+h4.text-white,
+h5.text-white,
+h6.text-white,
+.font-title.text-white {
+    color: #0f172a !important;
+}
+
+a.text-white.font-title {
+    color: #0f172a !important;
+}
+
+nav a.text-white:not(.bg-blue-600):not(.bg-emerald-600) {
+    color: var(--color-primary-color) !important;
+}
+
+nav a.text-slate-400 {
+    color: #475569 !important;
+}
+
+nav a:hover {
+    color: var(--color-primary-color) !important;
+}
+
+/* Form input, textarea and select readability */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="url"],
+input[type="search"],
+input[type="file"],
+textarea,
+select {
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Canvas overlay visibility */
+#heroCanvas {
+    opacity: 0.15 !important;
+}
+
+/* Accent colors legibility in light theme */
+.text-cyan-400 {
+    color: #be123c !important; /* Darker brand red/crimson for readable text in light theme */
+}
+.text-emerald-400 {
+    color: #059669 !important; /* Darker emerald for readable text */
+}
+
+/* Footer readability and hover styles */
+footer a.text-white {
+    color: #0f172a !important;
+}
+footer ul a.hover\:text-white:hover {
+    color: var(--color-primary-color) !important;
+}
+
+/* Light Theme outline buttons and text hover adjustments */
+a.text-white:not(.bg-blue-600):not(.bg-emerald-600):not(.bg-slate-950):not(.bg-slate-900) {
+    color: #1e293b !important;
+}
+a.text-white:not(.bg-blue-600):not(.bg-emerald-600):not(.bg-slate-950):not(.bg-slate-900):hover {
+    color: var(--color-primary-color) !important;
+    border-color: var(--color-primary-color) !important;
+}
+
+.hover\:text-white:hover {
+    color: var(--color-primary-color) !important;
+}
+
+/* Premium Card Shadows & Depth */
+.rounded-2xl.border-slate-800,
+.rounded-xl.border-slate-800,
+.rounded-xl.border-slate-850,
+.bg-slate-900.border-slate-800,
+.bg-slate-950.border-slate-850 {
+    box-shadow: 0 12px 34px -10px rgba(15, 23, 42, 0.05), 0 2px 6px -2px rgba(15, 23, 42, 0.02) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rounded-2xl.border-slate-800:hover,
+.rounded-xl.border-slate-800:hover,
+.rounded-xl.border-slate-850:hover,
+.bg-slate-900.border-slate-800:hover,
+.bg-slate-950.border-slate-850:hover {
+    box-shadow: 0 22px 48px -12px rgba(0, 86, 204, 0.12), 0 4px 12px -4px rgba(0, 86, 204, 0.04) !important;
+}
+
+/* Premium 3D Interactive Card styling - neutralized */
+.premium-3d-card {
+    position: relative;
+    background-clip: padding-box !important;
+}
+
+/* Glowing border - neutralized */
+.premium-3d-card::after {
+    display: none !important;
+}
+
+/* 3D Pop Out Effect for inner elements - neutralized */
+.premium-3d-card .pop-3d {
+    transform: none !important;
+    transition: none !important;
+}
+
+.premium-3d-card .pop-3d-lg {
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Inner Reflection/Sheen Effect - neutralized */
+.sheen-effect {
+    display: none !important;
+}
+
+/* Premium Scroll Reveal - neutralized */
+.scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.scroll-reveal.revealed {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Custom premium overrides to style all primary action buttons in logo red */
+button.bg-blue-600,
+a.bg-blue-600,
+button[class*="bg-blue-600"],
+a[class*="bg-blue-600"],
+input[type="submit"].bg-blue-600,
+.bg-gradient-to-r.from-blue-600.to-cyan-500,
+.bg-gradient-to-r.from-blue-700.to-cyan-600,
+button.bg-gradient-to-r,
+a.bg-gradient-to-r {
+    background-color: #e11d48 !important;
+    background-image: linear-gradient(135deg, #ff1a40 0%, #be123c 100%) !important;
+    border-color: #e11d48 !important;
+    color: #ffffff !important;
+}
+
+button.bg-blue-600:hover,
+a.bg-blue-600:hover,
+button[class*="bg-blue-600"]:hover,
+a[class*="bg-blue-600"]:hover,
+input[type="submit"].bg-blue-600:hover,
+.hover\:bg-blue-700:hover,
+.hover\:from-blue-700:hover,
+.hover\:to-cyan-600:hover,
+.bg-gradient-to-r.from-blue-600.to-cyan-500:hover {
+    background-color: #c0123c !important;
+    background-image: linear-gradient(135deg, #e10025 0%, #99001b 100%) !important;
+    border-color: #c0123c !important;
+    color: #ffffff !important;
+    box-shadow: 0 12px 24px -6px rgba(225, 29, 72, 0.4), 0 4px 8px -2px rgba(225, 29, 72, 0.2) !important;
+}
+
+/* Premium Deep Dark Section Utilities */
+.deep-dark-section {
+    background-color: #030712 !important;
+    color: #9ca3af !important;
+}
+.deep-dark-section h1,
+.deep-dark-section h2,
+.deep-dark-section h3,
+.deep-dark-section h4,
+.deep-dark-section h5,
+.deep-dark-section h6,
+.deep-dark-section .text-white,
+.deep-dark-section a.text-white,
+.deep-dark-section .font-title.text-white {
+    color: #ffffff !important;
+}
+.deep-dark-section p,
+.deep-dark-section .text-slate-350,
+.deep-dark-section .text-slate-400,
+.deep-dark-section .text-slate-450 {
+    color: #cbd5e1 !important;
+}
+.deep-dark-section .border-slate-800,
+.deep-dark-section .border-slate-900 {
+    border-color: #1f2937 !important;
+}
+.deep-dark-section .bg-slate-900,
+.deep-dark-section .bg-slate-955 {
+    background-color: #111827 !important;
+}
+.deep-dark-section a:hover {
+    color: #ff3356 !important;
+}
+.deep-dark-section a.bg-blue-600:hover,
+.deep-dark-section button.bg-blue-600:hover {
+    color: #ffffff !important;
+}
+
+
