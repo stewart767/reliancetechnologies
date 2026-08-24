@@ -17,4 +17,24 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-$app->handleRequest(Request::capture());
+$request = Request::capture();
+
+// If the request is rewritten to /public internally (the URI doesn't have /public but the script path does),
+// we adjust SCRIPT_NAME and PHP_SELF to remove '/public' so Symfony detects the correct base URL.
+$scriptName = $request->server->get('SCRIPT_NAME');
+if (str_contains($scriptName, '/public/') && !str_contains($request->getRequestUri(), '/public')) {
+    $request->server->set('SCRIPT_NAME', str_replace('/public', '', $scriptName));
+    $request->server->set('PHP_SELF', str_replace('/public', '', $request->server->get('PHP_SELF')));
+
+    $request->initialize(
+        $request->query->all(),
+        $request->request->all(),
+        $request->attributes->all(),
+        $request->cookies->all(),
+        $request->files->all(),
+        $request->server->all(),
+        $request->getContent()
+    );
+}
+
+$app->handleRequest($request);
