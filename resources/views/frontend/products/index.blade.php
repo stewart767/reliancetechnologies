@@ -85,16 +85,20 @@
                         <div class="absolute -right-8 -top-8 w-24 h-24 bg-blue-500/5 rounded-full blur-xl group-hover:bg-blue-500/10 transition-colors"></div>
                         
                         <div class="space-y-6">
-                            @if(isset($product['image']))
+                            @if($product->image)
                                 <div class="w-full h-48 overflow-hidden rounded-xl bg-slate-950 border border-slate-800/80 relative mb-6 shrink-0 shadow-inner">
-                                    <img src="{{ asset($product['image']) }}" alt="{{ $product['title'] }}" class="w-full h-full object-cover">
+                                    <img src="{{ Str::startsWith($product->image, 'images/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
                                 </div>
                             @endif
                             <!-- Header -->
                             <div class="flex items-center justify-between gap-4">
                                 <div class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                                    {!! $product['icon'] !!}
+                                    @if($product->icon)
+                                        {!! $product->icon !!}
+                                    @else
+                                        <svg class="w-6 h-6 text-blue-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                    @endif
                                 </div>
                                 <span class="inline-flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-full text-[9px] font-bold text-blue-500 uppercase tracking-wider">
                                     Enterprise Suite
@@ -103,15 +107,16 @@
 
                             <!-- Body -->
                             <div class="space-y-4">
-                                <h3 class="font-title font-extrabold text-white text-lg group-hover:text-blue-500 transition-colors block">{{ $product['title'] }}</h3>
+                                <h3 class="font-title font-extrabold text-white text-lg group-hover:text-blue-500 transition-colors block">{{ $product->title }}</h3>
                                 <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-medium font-sans">
-                                    {{ $product['description'] }}
+                                    {{ $product->description }}
                                 </p>
                                 
+                                @if($product->features && is_array($product->features))
                                 <div class="pt-2">
                                     <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">Core Features</h4>
                                     <ul class="space-y-1.5 text-xs text-slate-450 font-medium font-sans">
-                                        @foreach($product['features'] as $feature)
+                                        @foreach($product->features as $feature)
                                             <li class="flex items-center gap-2">
                                                 <svg class="w-3.5 h-3.5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                                                 {{ $feature }}
@@ -119,15 +124,16 @@
                                         @endforeach
                                     </ul>
                                 </div>
+                                @endif
                             </div>
                         </div>
 
                         <!-- Footer CTA -->
                         <div class="pt-6 border-t border-slate-800/60 mt-6 grid grid-cols-2 gap-3">
-                            <a href="{{ route('contact.index', ['service' => $product['title'], 'action' => 'buy']) }}" class="text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3 py-2.5 rounded-lg transition-all shadow-md hover:shadow-blue-500/10 cursor-pointer">
+                            <a href="{{ route('contact.index', ['service' => $product->title, 'action' => 'buy']) }}" class="text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3 py-2.5 rounded-lg transition-all shadow-md hover:shadow-blue-500/10 cursor-pointer">
                                 Buy Now
                             </a>
-                            <a href="{{ route('contact.index', ['service' => $product['title'], 'action' => 'request']) }}" class="text-center border border-slate-800 hover:border-slate-750 text-slate-400 hover:text-white font-semibold text-[11px] px-3 py-2.5 rounded-lg transition-all cursor-pointer bg-slate-950/40">
+                            <a href="{{ route('contact.index', ['service' => $product->title, 'action' => 'request']) }}" class="text-center border border-slate-800 hover:border-slate-750 text-slate-400 hover:text-white font-semibold text-[11px] px-3 py-2.5 rounded-lg transition-all cursor-pointer bg-slate-950/40">
                                 Request Demo
                             </a>
                         </div>
@@ -152,16 +158,20 @@
                         <div class="absolute -right-8 -top-8 w-24 h-24 bg-blue-500/5 rounded-full blur-xl group-hover:bg-blue-500/10 transition-colors"></div>
                         
                         <div class="space-y-6">
-                            @if(isset($product['image']))
+                            @if($product->image)
                                 <div class="w-full h-48 overflow-hidden rounded-xl bg-slate-950 border border-slate-800/80 relative mb-6 shrink-0 shadow-inner">
-                                    <img src="{{ asset($product['image']) }}" alt="{{ $product['title'] }}" class="w-full h-full object-cover">
+                                    <img src="{{ Str::startsWith($product->image, 'images/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
                                 </div>
                             @endif
                             <!-- Header -->
                             <div class="flex items-center justify-between gap-4">
                                 <div class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                                    {!! $product['icon'] !!}
+                                    @if($product->icon)
+                                        {!! $product->icon !!}
+                                    @else
+                                        <svg class="w-6 h-6 text-blue-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                    @endif
                                 </div>
                                 <span class="inline-flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full text-[9px] font-bold text-emerald-600 uppercase tracking-wider">
                                     Hardware Catalog
@@ -171,18 +181,18 @@
                             <!-- Body -->
                             <div class="space-y-4">
                                 <div class="flex justify-between items-start gap-4">
-                                    <h3 class="font-title font-extrabold text-white text-[15px] sm:text-base group-hover:text-blue-500 transition-colors block leading-tight flex-grow">{{ $product['title'] }}</h3>
-                                    <span class="text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md shrink-0">{{ $product['price'] }}</span>
+                                    <h3 class="font-title font-extrabold text-white text-[15px] sm:text-base group-hover:text-blue-500 transition-colors block leading-tight flex-grow">{{ $product->title }}</h3>
+                                    <span class="text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md shrink-0">{{ $product->price }}</span>
                                 </div>
                                 <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-medium font-sans">
-                                    {{ $product['description'] }}
+                                    {{ $product->description }}
                                 </p>
                                 
-                                @if(isset($product['specs']))
+                                @if($product->specs && is_array($product->specs))
                                 <div class="pt-2">
                                     <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Specifications</span>
                                     <ul class="space-y-1.5 text-xs text-slate-400 font-medium font-sans">
-                                        @foreach($product['specs'] as $spec)
+                                        @foreach($product->specs as $spec)
                                             <li class="flex items-start gap-2">
                                                 <svg class="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                                                 {{ $spec }}
@@ -196,11 +206,11 @@
 
                         <!-- Footer CTA -->
                         <div class="pt-6 border-t border-slate-850 mt-6 grid grid-cols-2 gap-3">
-                            <button onclick="addToCart('{{ $product['title'] }}', '{{ $product['price'] }}', '{{ $product['image'] }}')" class="text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3 py-2.5 rounded-lg transition-all shadow-md hover:shadow-blue-500/10 cursor-pointer flex items-center justify-center gap-1.5 border-0 focus:outline-none">
+                            <button onclick="addToCart('{{ $product->title }}', '{{ $product->price }}', '{{ Str::startsWith($product->image, 'images/') ? asset($product->image) : asset('storage/' . $product->image) }}')" class="text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] px-3 py-2.5 rounded-lg transition-all shadow-md hover:shadow-blue-500/10 cursor-pointer flex items-center justify-center gap-1.5 border-0 focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                                 Add to Cart
                             </button>
-                            <a href="{{ route('contact.index', ['service' => $product['title'], 'action' => 'request']) }}" class="text-center border border-slate-800 hover:border-slate-750 text-slate-400 hover:text-white font-semibold text-[11px] px-3 py-2.5 rounded-lg transition-all cursor-pointer bg-slate-950/40">
+                            <a href="{{ route('contact.index', ['service' => $product->title, 'action' => 'request']) }}" class="text-center border border-slate-800 hover:border-slate-750 text-slate-400 hover:text-white font-semibold text-[11px] px-3 py-2.5 rounded-lg transition-all cursor-pointer bg-slate-950/40">
                                 Request Info
                             </a>
                         </div>

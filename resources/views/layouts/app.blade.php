@@ -7,6 +7,11 @@
     <!-- Dynamic SEO Component -->
     @yield('seo')
     
+    <!-- Google Fonts Preconnect & Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS and Alpine.js assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -652,10 +657,7 @@
 
     @php
         $whatsappNumber = setting('whatsapp_number') ?: '255779304500';
-        $servicesList = \App\Models\Service::where('is_active', true)
-                            ->orderBy('sort_order')
-                            ->pluck('title')
-                            ->toArray();
+        $servicesList = isset($globalServices) ? $globalServices->pluck('title')->toArray() : [];
         
         $softwareProducts = [
             'Smart Sale',

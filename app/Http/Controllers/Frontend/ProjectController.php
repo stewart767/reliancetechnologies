@@ -12,12 +12,16 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::where('is_published', true)
-            ->with('industry')
-            ->orderBy('published_at', 'desc')
-            ->get();
+        $projects = \Illuminate\Support\Facades\Cache::remember('projects_index', 86400, function () {
+            return Project::where('is_published', true)
+                ->with('industry')
+                ->orderBy('published_at', 'desc')
+                ->get();
+        });
 
-        $industries = \App\Models\Industry::where('is_active', true)->orderBy('sort_order')->get();
+        $industries = \Illuminate\Support\Facades\Cache::remember('global_industries', 86400, function () {
+            return \App\Models\Industry::where('is_active', true)->orderBy('sort_order')->get();
+        });
 
         return view('frontend.projects.index', compact('projects', 'industries'));
     }

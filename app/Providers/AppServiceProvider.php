@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,33 +20,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Load company settings into config dynamically if database table exists
+        // Load company settings into config dynamically
         try {
-            if (\Schema::hasTable('company_settings')) {
-                $settings = \Cache::rememberForever('company_settings', function () {
-                    return \App\Models\CompanySetting::all()->pluck('value', 'key')->toArray();
-                });
-                config(['settings' => $settings]);
-            }
-        } catch (\Exception $e) {
+            $settings = Cache::rememberForever('company_settings', function () {
+                return \App\Models\CompanySetting::pluck('value', 'key')->toArray();
+            });
+            config(['settings' => $settings]);
+        } catch (\Throwable $e) {
             // Prevent failure during clean setup or before MySQL server connects
         }
 
         // Share Services, Solutions, and Industries globally with the frontend layout for mega-menu dropdowns
         view()->composer('layouts.app', function ($view) {
             try {
-                $services = \Schema::hasTable('services')
-                    ? \App\Models\Service::where('is_active', true)->orderBy('sort_order')->get()
-                    : collect();
+                $services = Cache::remember('global_services', 86400, function () {
+                    return \App\Models\Service::where('is_active', true)->orderBy('sort_order')->get();
+                });
                 
-                $solutions = \Schema::hasTable('solutions')
-                    ? \App\Models\Solution::where('is_active', true)->orderBy('sort_order')->get()
-                    : collect();
+                $solutions = Cache::remember('global_solutions', 86400, function () {
+                    return \App\Models\Solution::where('is_active', true)->orderBy('sort_order')->get();
+                });
                 
-                $industries = \Schema::hasTable('industries')
-                    ? \App\Models\Industry::where('is_active', true)->orderBy('sort_order')->get()
-                    : collect();
-            } catch (\Exception $e) {
+                $industries = Cache::remember('global_industries', 86400, function () {
+                    return \App\Models\Industry::where('is_active', true)->orderBy('sort_order')->get();
+                });
+            } catch (\Throwable $e) {
                 $services = collect();
                 $solutions = collect();
                 $industries = collect();
@@ -57,5 +56,26 @@ class AppServiceProvider extends ServiceProvider
                 'globalIndustries' => $industries,
             ]);
         });
+
+        // Register model cache flush observers for real-time cache eviction
+        $observedModels = [
+            \App\Models\Service::class,
+            \App\Models\Solution::class,
+            \App\Models\Industry::class,
+            \App\Models\CompanySetting::class,
+            \App\Models\Project::class,
+            \App\Models\Post::class,
+            \App\Models\Slider::class,
+            \App\Models\Testimonial::class,
+            \App\Models\Partner::class,
+            \App\Models\Product::class,
+            \App\Models\Leader::class,
+            \App\Models\Certificate::class,
+            \App\Models\Faq::class,
+            \App\Models\YaoyaoSpec::class,
+        ];
+        foreach ($observedModels as $model) {
+            $model::observe(\App\Observers\CacheFlushObserver::class);
+        }
     }
 }

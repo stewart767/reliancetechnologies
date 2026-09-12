@@ -21,9 +21,11 @@ class AboutController extends Controller
      */
     public function leadership()
     {
-        $leaders = Leader::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $leaders = \Illuminate\Support\Facades\Cache::remember('about_leaders', 86400, function () {
+            return Leader::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+        });
 
         return view('frontend.about.leadership', compact('leaders'));
     }
@@ -33,9 +35,11 @@ class AboutController extends Controller
      */
     public function certificates()
     {
-        $certificates = Certificate::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $certificates = \Illuminate\Support\Facades\Cache::remember('about_certificates', 86400, function () {
+            return Certificate::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+        });
 
         return view('frontend.about.certificates', compact('certificates'));
     }

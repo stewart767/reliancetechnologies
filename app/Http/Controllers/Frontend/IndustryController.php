@@ -13,9 +13,11 @@ class IndustryController extends Controller
      */
     public function index()
     {
-        $industries = Industry::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $industries = \Illuminate\Support\Facades\Cache::remember('global_industries', 86400, function () {
+            return Industry::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+        });
 
         return view('frontend.industries.index', compact('industries'));
     }

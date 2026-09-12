@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             CertificateSeeder::class,
             YaoyaoSpecSeeder::class,
             SliderSeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }

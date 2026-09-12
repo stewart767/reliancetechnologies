@@ -12,9 +12,11 @@ class SolutionController extends Controller
      */
     public function index()
     {
-        $solutions = Solution::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $solutions = \Illuminate\Support\Facades\Cache::remember('global_solutions', 86400, function () {
+            return Solution::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+        });
 
         return view('frontend.solutions.index', compact('solutions'));
     }

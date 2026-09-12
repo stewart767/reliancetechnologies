@@ -14,19 +14,22 @@ class YaoyaoController extends Controller
      public function index()
      {
          // Load FAQs related to green mobility
-         $faqs = Faq::where('is_active', true)
-             ->where('category', 'YAOYAO Energies')
-             ->orderBy('sort_order')
-             ->get();
+         $faqs = \Illuminate\Support\Facades\Cache::remember('yaoyao_faqs', 86400, function () {
+             return Faq::where('is_active', true)
+                 ->where('category', 'YAOYAO Energies')
+                 ->orderBy('sort_order')
+                 ->get();
+         });
  
          // Retrieve specs from database
-         $dbSpecs = YaoyaoSpec::orderBy('sort_order')->get();
-         
-         // Group specs as group_name => [key => value] to match original structure
-         $specs = [];
-         foreach ($dbSpecs as $s) {
-             $specs[$s->group][$s->key] = $s->value;
-         }
+         $specs = \Illuminate\Support\Facades\Cache::remember('yaoyao_specs', 86400, function () {
+             $dbSpecs = YaoyaoSpec::orderBy('sort_order')->get();
+             $grouped = [];
+             foreach ($dbSpecs as $s) {
+                 $grouped[$s->group][$s->key] = $s->value;
+             }
+             return $grouped;
+         });
  
          return view('frontend.yaoyao.index', compact('faqs', 'specs'));
      }

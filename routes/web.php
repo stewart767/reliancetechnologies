@@ -59,6 +59,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function() {
     Route::resource('industries', AD\IndustryController::class)->except(['show']);
     Route::resource('projects', AD\ProjectController::class)->except(['show']);
     Route::delete('projects/{project}/gallery/{image}', [AD\ProjectController::class, 'deleteImage'])->name('projects.gallery.destroy');
+    Route::resource('products', AD\ProductController::class)->except(['show']);
     Route::resource('testimonials', AD\TestimonialController::class)->except(['show']);
     Route::resource('partners', AD\PartnerController::class)->except(['show']);
     Route::resource('posts', AD\PostController::class)->except(['show']);

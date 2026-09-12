@@ -88,13 +88,17 @@
                     class="absolute inset-0 w-full h-full"
                     style="display: none;"
                 >
-                    <!-- Highly blurred, low opacity background image for rich ambient atmospheric color -->
+                    <!-- Highly blurred, higher opacity background image for rich ambient atmospheric color -->
                     <div 
-                        class="absolute inset-0 bg-cover bg-center bg-no-repeat blur-3xl opacity-20 scale-110"
+                        class="absolute inset-0 bg-cover bg-center bg-no-repeat blur-2xl opacity-45 scale-110"
                         style="background-image: url('{{ Str::startsWith($slide->background_image, 'images/') ? asset($slide->background_image) : asset('storage/' . $slide->background_image) }}');"
                     ></div>
-                    <!-- Ambient dark overlay for high text legibility -->
-                    <div class="absolute inset-0 bg-slate-100/90"></div>
+                    <!-- Ambient dark overlay with reduced opacity to let colors shine through -->
+                    <div class="absolute inset-0 bg-slate-100/75"></div>
+                    
+                    <!-- Ambient color glows inside the slide context -->
+                    <div class="absolute top-0 right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none"></div>
+                    <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-500/15 blur-[120px] pointer-events-none"></div>
                 </div>
             @endforeach
         </div>
@@ -103,7 +107,7 @@
         <canvas id="heroCanvas" class="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-20"></canvas>
         
         <!-- Subtle global gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-100/80 to-transparent z-20 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-100/90 via-slate-100/50 to-transparent z-20 pointer-events-none"></div>
         
         <div class="container relative z-30 min-h-[calc(100vh-14rem)] flex items-center w-full">
             <div class="w-full relative">
@@ -305,151 +309,50 @@
             />
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product 1: Smart Sale -->
+                @foreach($softwareProducts as $product)
+                <!-- Product Card -->
                 <div class="bg-slate-955 border border-slate-800/85 rounded-2xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
                         <!-- Image Header -->
                         <div class="h-48 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-                            <img src="{{ asset('images/products/smart-sale.jpg') }}" alt="Smart Sale POS dashboard" class="w-full h-full object-cover">
+                            @if($product->image)
+                                <img src="{{ Str::startsWith($product->image, 'images/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
+                            @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-955 via-transparent to-transparent opacity-80"></div>
                             
                             <!-- Badges or floating icon -->
                             <div class="absolute top-4 left-4 w-10 h-10 bg-slate-950/80 backdrop-blur border border-slate-800 text-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                </svg>
+                                @if($product->icon)
+                                    {!! $product->icon !!}
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    </svg>
+                                @endif
                             </div>
                         </div>
 
                         <!-- Card Body -->
                         <div class="p-8 space-y-4">
-                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">Smart Sale</h3>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">A cloud-first retail management and POS platform offering real-time sales telemetry, offline sales buffer sync, barcoding, and automated billing.</p>
+                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">{{ $product->title }}</h3>
+                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">{{ $product->description }}</p>
                         </div>
                     </div>
+                    @if($product->website_url)
                     <div class="px-8 pb-8 pt-0 flex items-center justify-between">
-                        <a href="https://www.smartsale.co.tz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
+                        <a href="{{ $product->website_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
                             Visit Website <span class="text-rose-500 text-[9px]">&#9658;</span>
                         </a>
                     </div>
-                </div>
-
-                <!-- Product 2: Employee Reference Bureau -->
-                <div class="bg-slate-955 border border-slate-800/85 rounded-2xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <!-- Image Header -->
-                        <div class="h-48 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-                            <img src="{{ asset('images/products/erb.jpg') }}" alt="Employee Reference Bureau portal" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-955 via-transparent to-transparent opacity-80"></div>
-                            
-                            <!-- Badges or floating icon -->
-                            <div class="absolute top-4 left-4 w-10 h-10 bg-slate-950/80 backdrop-blur border border-slate-800 text-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- Card Body -->
-                        <div class="p-8 space-y-4">
-                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">Employee Reference Bureau</h3>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">A secure verification registry built on zero-trust architectures, allowing certified institutions to conduct authenticated background history checks.</p>
-                        </div>
-                    </div>
+                    @else
                     <div class="px-8 pb-8 pt-0 flex items-center justify-between">
-                        <a href="https://www.erb.co.tz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
-                            Visit Website <span class="text-rose-500 text-[9px]">&#9658;</span>
+                        <a href="{{ route('contact.index', ['service' => $product->title, 'action' => 'request']) }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
+                            Request Demo <span class="text-rose-500 text-[9px]">&#9658;</span>
                         </a>
                     </div>
+                    @endif
                 </div>
-
-                <!-- Product 3: Team Track -->
-                <div class="bg-slate-955 border border-slate-800/85 rounded-2xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <!-- Image Header -->
-                        <div class="h-48 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-                            <img src="{{ asset('images/products/team-track.jpg') }}" alt="Team Track mapping dashboard" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-955 via-transparent to-transparent opacity-80"></div>
-                            
-                            <!-- Badges or floating icon -->
-                            <div class="absolute top-4 left-4 w-10 h-10 bg-slate-950/80 backdrop-blur border border-slate-800 text-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- Card Body -->
-                        <div class="p-8 space-y-4">
-                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">Team Track</h3>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">An interactive field service portal combining GPS telemetry tracking, automated routing, and mobile offline task reports to boost SLA compliance.</p>
-                        </div>
-                    </div>
-                    <div class="px-8 pb-8 pt-0 flex items-center justify-between">
-                        <a href="https://www.teamtrack.co.tz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
-                            Visit Website <span class="text-rose-500 text-[9px]">&#9658;</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product 4: Reliance Home -->
-                <div class="bg-slate-955 border border-slate-800/85 rounded-2xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <!-- Image Header -->
-                        <div class="h-48 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-                            <img src="{{ asset('images/products/reliance-home.jpg') }}" alt="Reliance Home dashboard" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-955 via-transparent to-transparent opacity-80"></div>
-                            
-                            <!-- Badges or floating icon -->
-                            <div class="absolute top-4 left-4 w-10 h-10 bg-slate-950/80 backdrop-blur border border-slate-800 text-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- Card Body -->
-                        <div class="p-8 space-y-4">
-                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">Reliance Home</h3>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">A premium real estate, property management and automation platform designed to simplify tenancy tracking, rent collection, and smart energy monitoring.</p>
-                        </div>
-                    </div>
-                    <div class="px-8 pb-8 pt-0 flex items-center justify-between">
-                        <a href="https://www.reliancehomes.co.tz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
-                            Visit Website <span class="text-rose-500 text-[9px]">&#9658;</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product 5: Ajira Market -->
-                <div class="bg-slate-955 border border-slate-800/85 rounded-2xl overflow-hidden hover:border-blue-500/20 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                        <!-- Image Header -->
-                        <div class="h-48 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-                            <img src="{{ asset('images/products/ajira-market.jpg') }}" alt="Ajira Market portal" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-955 via-transparent to-transparent opacity-80"></div>
-                            
-                            <!-- Badges or floating icon -->
-                            <div class="absolute top-4 left-4 w-10 h-10 bg-slate-950/80 backdrop-blur border border-slate-800 text-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        <!-- Card Body -->
-                        <div class="p-8 space-y-4">
-                            <h3 class="font-title font-bold text-white text-lg group-hover:text-blue-500 transition-colors">Ajira Market</h3>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">A high-throughput recruitment portal featuring real-time verification APIs, resume indexing engines, and recruiter dashboards.</p>
-                        </div>
-                    </div>
-                    <div class="px-8 pb-8 pt-0 flex items-center justify-between">
-                        <a href="https://www.ajiramarket.co.tz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-cyan-400 transition-colors">
-                            Visit Website <span class="text-rose-500 text-[9px]">&#9658;</span>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

@@ -109,12 +109,7 @@
                     </div>
                 </div>
 
-                @foreach($project->gallery as $image)
-                    <form id="delete-image-{{ $image->id }}" action="{{ route('admin.projects.gallery.destroy', [$project->id, $image->id]) }}" method="POST" class="hidden">
-                        @csrf
-                        @method('DELETE')
-                    </form>
-                @endforeach
+
             @endif
 
             <div class="flex items-center gap-6 pt-4 border-t border-slate-800">
@@ -139,4 +134,13 @@
         </form>
     </div>
 </div>
+
+@if(isset($project) && $project->gallery->isNotEmpty())
+    @foreach($project->gallery as $image)
+        <form id="delete-image-{{ $image->id }}" action="{{ route('admin.projects.gallery.destroy', [$project->id, $image->id]) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endforeach
+@endif
 @endsection
